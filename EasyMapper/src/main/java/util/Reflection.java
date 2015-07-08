@@ -10,42 +10,37 @@ import java.util.List;
 import java.util.Set;
 
 public class Reflection {
+    
+    public static <E> E newInstance(final Class<E> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-//	public static List<Field> getAllJpaMappedFields(Class<? extends IdentifiableBySerial> clazz) {
-//		List<Field> fields =  new ArrayList<Field>();
-//		fields.addAll(Arrays.asList(getAllFields(clazz)));
-//		
-//		List<Field> notJpaMapped = new ArrayList<Field>();
-//		for (Field f : fields) 
-//			if()
-//				notJpaMapped.add(f);
-//		
-//		fields.removeAll(notJpaMapped);
-//		return fields;
-//	}
-	
 	public static List<Field> getAllFields(Class<?> clazz) {
 		List<Class<?>> classes = getAllSuperclasses(clazz);
 		classes.add(clazz);
 		return Arrays.asList(getAllFields(classes));
 	}
 	
-	/**
-	 * Return the value of the field on the bean object
-	 * @param f
-	 * @param bean
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 */
-	public static Object getValue(Field f, Object bean) throws IllegalArgumentException, IllegalAccessException {
+	public static Object getValue(Field f, Object bean) {
 		f.setAccessible(true);
-		return f.get(bean);
+		try {
+		    return f.get(bean);
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		}
 	}
 	
-	public static void setValue(Field f, Object fieldValue, Object bean) throws IllegalArgumentException, IllegalAccessException {
+	public static void setValue(Field f, Object fieldValue, Object bean) {
 		f.setAccessible(true);
-		f.set(bean, fieldValue);
+		try {
+            f.set(bean, fieldValue);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 	
 	public static Field getFieldByName(String name, Object bean) throws NoSuchFieldException {
@@ -119,4 +114,5 @@ public class Reflection {
 	public static boolean isStatic(final Field field) {
 		return Modifier.isStatic(field.getModifiers());
 	}
+	
 }

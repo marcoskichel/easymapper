@@ -8,8 +8,6 @@ import java.util.Map;
 
 import util.Reflection;
 
-
-
 public class EasyMapper {
 	
 	private Map<String, Object> fieldValues;
@@ -17,7 +15,9 @@ public class EasyMapper {
 	@SuppressWarnings("unchecked")
 	public <T, E> void map(final T from, final Class<E> toClass) {
 		Class<T> fromClass = (Class<T>) from.getClass();
-		E to = toClass.newInstance();
+		
+		E to = Reflection.newInstance(toClass);
+		
 		List<Field> fromFields = Reflection.getAllFields(fromClass);
 		List<Field> toFields = Reflection.getAllFields(toClass);
 		
@@ -25,23 +25,23 @@ public class EasyMapper {
 		look4ComposeMatches(from, to, fromFields, toFields);
 	}
 
-	private <T, E> void look4SimpleMatches(final T from, E to, List<Field> fromFields, List<Field> toFields) throws IllegalAccessException {
+	private <T, E> void look4SimpleMatches(final T from, E to, List<Field> fromFields, List<Field> toFields) {
 		List<Field> toRemove = new ArrayList<>();
 		for (Field field : fromFields) {
 			if (containsFieldNamed(field.getName(), toFields)) {
-				Reflection.setValue(field, to, from);
+                Reflection.setValue(field, to, from);
 				toRemove.add(field);
 			}
 		}
 		fromFields.removeAll(toFields);
 	}
 	
-	private <T, E> void look4ComposeMatches(final T from, E to, List<Field> fromFields, List<Field> toFields) throws IllegalAccessException {
+	private <T, E> void look4ComposeMatches(final T from, E to, List<Field> fromFields, List<Field> toFields) {
 		fieldValues = new HashMap<>();
-		loadFieldValues(fromFields, from, "");
+        loadFieldValues(fromFields, from, "");
 	}
 	
-	private void loadFieldValues(List<Field> fromFields, Object from, String layer) throws IllegalArgumentException, IllegalAccessException {
+	private void loadFieldValues(List<Field> fromFields, Object from, String layer) {
 		for (Field field : fromFields) {
 			if (Reflection.isStatic(field)) {
 				continue;
