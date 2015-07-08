@@ -1,0 +1,21 @@
+
+Variaveis: 
+	a -> objeto (from)
+	bClasse -> classe (to)
+	listaA -> campos de a
+	listaB -> campos de bClasse
+	listaComum -> campos em comum;
+	b -> instancia de bClasse
+	
+	
+1. Extrair os campos de bClasse listaB;
+2  Extrair os campos de a em listaA;
+3. b := new Instance(bClasse);
+
+4. listaComum := Equivalentes diretos(MESMO NOME) de listaB em listaA;
+5. Setar os valores listaComum em b;
+6. remover listaComum de listaA e listaB;
+7. limpar listaComum;
+
+ ???? o que fazer a seguir ?????
+ não sei qual a melhor abordagem
